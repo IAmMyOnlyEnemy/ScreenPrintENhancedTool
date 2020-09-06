@@ -1,6 +1,6 @@
 import tkinter as tk                
 from tkinter import ttk            
-from tkinter import font as tkfont 
+#from tkinter import font as tkfont 
 from tkinter import filedialog
 from PIL import ImageGrab
 from os import path
@@ -14,14 +14,14 @@ class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.title("Main 07, sper ca e bine...")
+        self.title("Screen ENhanced Tool")
         self.minsize(width=global_settings["form_dimensions"][0],
                     height=global_settings["form_dimensions"][1])
         self.maxsize(width=global_settings["form_dimensions"][0],
                     height=global_settings["form_dimensions"][1])
         self.geometry("{0}x{1}".format(global_settings["form_dimensions"][0], global_settings["form_dimensions"][1]))
-        self.wm_iconbitmap("Images\\zoom_01.ico")
-        self.title_font = tkfont.Font(family='Helvetica',size=12,weight="bold",slant="italic")
+        self.wm_iconbitmap("Images\\STEN_icon.ico")
+        #self.title_font = tkfont.Font(family='Helvetica',size=12,weight="bold",slant="italic")
         container = ttk.Notebook(self)
         container.pack(side="top", fill="both", expand=True)
 
@@ -33,7 +33,6 @@ class SampleApp(tk.Tk):
             container.add(frame, text=page_name)
 
         self.show_frame("PrintScreen")
-        #self.protocol("WM_DELETE_WINDOW", self.frames[0].update_settings)
 
     def show_frame(self, page_name):
         frame = self.frames[page_name]
@@ -100,7 +99,6 @@ class PrintScreen(tk.Frame):
 
         self.screenlist = MyList(parent=frmlst)
         self.screenlist.bind('<<ListboxSelect>>', self.onselect_listbox)
-        #self.screenlist.event_generate("<<ListboxSelect>>")
 
         num_vals = self.get_spin_vals(0)
         lett_vals = self.get_spin_vals(1)
@@ -170,15 +168,28 @@ class PrintScreen(tk.Frame):
             self.statuslabel.set_label("Could not save picture")
 
     def img_frame(self):
-        res_x = self.winfo_screenwidth()
-        res_y = self.winfo_screenheight()
-        if self.tso_option.get() == "CICS":
-            x = (res_x - global_settings['CICS_dimmension'][0]) / 2
-            y = (res_y - global_settings['CICS_dimmension'][1]) / 2
-        else:
-            x = (res_x - global_settings['TSO_dimmension'][0]) / 2
-            y = (res_y - global_settings['TSO_dimmension'][1]) / 2
-        frame = (x, y, res_x - x, res_y - y )
+        '''
+        The frame for the print screen is a rectangle created by this values:
+            * x position of upper-left corner
+            * y position of upper-left corner
+            * dimension in x direction
+            * dimension in y direction
+        This values can be modified in the settings.txt file
+        '''
+
+        x1 = global_settings[self.tso_option.get() + '_dimmension'][0]
+        if x1 < 1:
+            x1 = 1
+        y1 = global_settings[self.tso_option.get() + '_dimmension'][1]
+        if y1 < 1:
+            y1 = 1
+        x2 = x1 + global_settings[self.tso_option.get() + '_dimmension'][2]
+        if x2 > self.winfo_screenwidth():
+            x2 = self.winfo_screenwidth()
+        y2 = y1 + global_settings[self.tso_option.get() + '_dimmension'][3]
+        if y2 > self.winfo_screenheight():
+            y2 = self.winfo_screenheight()
+        frame = (x1, y1, x2, y2)
         return frame
 
     def get_img_name(self):
@@ -204,8 +215,8 @@ class PrintScreen(tk.Frame):
     def update_frame_res(self):
         self.reslabel.set_label(
                 "{0} x {1} [{2}x{3}]".format(
-                                    global_settings[self.tso_option.get() + '_dimmension'][0],
-                                    global_settings[self.tso_option.get() + '_dimmension'][1],
+                                    global_settings[self.tso_option.get() + '_dimmension'][2],
+                                    global_settings[self.tso_option.get() + '_dimmension'][3],
                                     self.winfo_screenwidth(),
                                     self.winfo_screenheight())
                                 )
@@ -231,8 +242,8 @@ class PrintScreen(tk.Frame):
         for i, list_value in enumerate(self.screenlist.get(0, tk.END)):
             global_settings["screen_list"].append(list_value)
         global_settings['save_path'][0] = self.pathentry.get_entry()
-        print(global_settings["screen_list"])
-        fill_file_from_dict("Settings\\settings1.txt",global_settings)
+        #print(global_settings["screen_list"])
+        fill_file_from_dict("Settings\\settings.txt",global_settings)
 
 class MyEntry(tk.Entry):
     def __init__(self,parent,entry_setts):
@@ -437,7 +448,7 @@ class ChainPrints(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="This is page 1", font=controller.title_font)
+        label = tk.Label(self, text="This is page 1")#, font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("PrintScreen"))
