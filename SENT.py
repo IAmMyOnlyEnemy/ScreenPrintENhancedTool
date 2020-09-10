@@ -6,11 +6,13 @@ from PIL import ImageGrab
 from os import path
 from import_settings import *
 
-
 class SampleApp(tk.Tk):
 
     global global_settings
     global_settings = get_settings()
+    global mycolour
+    mycolour = "snow3"
+    #mycolour = "#00ffff"
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -40,7 +42,7 @@ class SampleApp(tk.Tk):
 
 class PrintScreen(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent,bg=mycolour)
         self.controller = controller
 
         self.pathentry=MyEntry(parent=self, entry_setts=[51, 10, 8])
@@ -58,7 +60,7 @@ class PrintScreen(tk.Frame):
         tso_radbutt.config(command=self.update_frame_res)
         
         self.update_frame_res()
-        self.statuslabel=MyLabel(parent=self, label_setts=[50, "w", 10, 200])
+        self.statuslabel=MyLabel(parent=self, label_setts=[47, "w", 10, 200])
         self.statuslabel.set_label("Ready!")
 
         self.image_bbr = tk.PhotoImage(file="Images\\Browse_button.png")
@@ -247,12 +249,14 @@ class PrintScreen(tk.Frame):
 
 class MyEntry(tk.Entry):
     def __init__(self,parent,entry_setts):
-        tk.Entry.__init__(self,parent)
         self.entry_var = tk.StringVar()
+        tk.Entry.__init__(self,parent,
+                            #bg=mycolour,
+                            justify=tk.LEFT,
+                            textvariable=self.entry_var,
+                            width=entry_setts[0]
+                            )
         self.entry_var.set(global_settings['save_path'][0])
-        self.config(justify=tk.LEFT)
-        self.config(textvariable=self.entry_var)
-        self.config(width=entry_setts[0])
         self.place(x=entry_setts[1],y=entry_setts[2])
 
     def set_entry(self, new_text):
@@ -268,6 +272,7 @@ class MyLabel(tk.Label):
                             width=label_setts[0],
                             anchor=label_setts[1],
                             font=("Monospace",10),
+                            bg=mycolour,
                             justify=tk.LEFT
                             )
         self.label_var = tk.StringVar()
@@ -289,6 +294,7 @@ class MyRadiobutt(tk.Radiobutton):
                                 variable=op_val,
                                 anchor="w",
                                 width=4,
+                                bg=mycolour,
                                 indicatoron=0
                                 )
         self.pack(fill=tk.BOTH)
@@ -296,7 +302,6 @@ class MyRadiobutt(tk.Radiobutton):
 class MyList(tk.Listbox):
     def __init__(self,parent):
         tk.Listbox.__init__(self,parent)
-
         self.config(exportselection=0)
         self.config(font=("Monospace",10))
         self.config(selectmode=tk.SINGLE)
@@ -377,12 +382,15 @@ class MyList(tk.Listbox):
 
 class MySpinbox(tk.Spinbox):
     def __init__(self,parent=None,spinvals=None,pos_x=0):
-        tk.Spinbox.__init__(self,parent)
         self.spin_var = tk.StringVar()
-        self.config(textvariable=self.spin_var)
-        self.config(values=spinvals)
-        self.config(width=3)
-        self.config(justify="center")
+        tk.Spinbox.__init__(self,
+                            parent,
+                            #bg=mycolour,
+                            textvariable=self.spin_var,
+                            values=spinvals,
+                            width=3,
+                            justify="center"
+                            )
         self.place(x=pos_x,y=80)
 
     def spinNext(self):
@@ -428,11 +436,14 @@ class MySpinbox(tk.Spinbox):
 
 class MyCheckbox(tk.Checkbutton):
     def __init__(self,parent=None,pos_x=0):
-        tk.Checkbutton.__init__(self,parent)
         self.checkbox_var = tk.IntVar()
-        self.config(variable=self.checkbox_var)
-        self.config(onvalue=1)
-        self.config(offvalue=0)
+        tk.Checkbutton.__init__(self,
+                                parent,
+                                bg=mycolour,
+                                variable=self.checkbox_var,
+                                onvalue=1,
+                                offvalue=0
+                                )
         self.place(x=pos_x,y=53)
 
     def get_checkbox(self):
