@@ -4,7 +4,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from PIL import ImageGrab
 from os import path
-from import_settings import *
+from import_settings import get_settings
 
 class SampleApp(tk.Tk):
 
@@ -46,7 +46,7 @@ class PrintScreen(tk.Frame):
         self.controller = controller
 
         self.pathentry=MyEntry(parent=self, entry_setts=[51, 10, 8])
-        self.imglabel=MyLabel(parent=self, label_setts=[15, "w", 10, 30])
+        self.imglabel=MyLabel(parent=self, label_setts=[25, "w", 10, 30])
         self.imglabel.config(justify=tk.LEFT)
 
         frmrdbt = tk.Frame(self,width=15, height=10)
@@ -64,32 +64,32 @@ class PrintScreen(tk.Frame):
         self.statuslabel.set_label("Ready!")
 
         self.image_bbr = tk.PhotoImage(file="Images\\Browse_button.png")
-        browse_button = tk.Button(self,
+        self.browse_button = tk.Button(self,
                             command=self.browse_command,
                             image=self.image_bbr,
                             text="Browse",
                             compound=tk.LEFT
                             ).place(x=322,y=3)
         self.image_bpic = tk.PhotoImage(file="Images\\Pic_button.png")
-        print_button = tk.Button(self,
+        self.print_button = tk.Button(self,
                             command=self.pic_cmd,
                             image=self.image_bpic,
                             text="PrintScreen",
                             compound=tk.TOP
                             ).place(x=297,y=90)
-        up_button = tk.Button(self,
+        self.up_button = tk.Button(self,
                             text="Up",
                             compound="center",
                             command=lambda: self.statuslabel.set_label(self.screenlist.move_up()),
                             width=3
                             ).place(x=10,y=170)
-        down_button = tk.Button(self,
+        self.down_button = tk.Button(self,
                             text="Dn",
                             compound="center",
                             command=lambda: self.statuslabel.set_label(self.screenlist.move_down()),
                             width=3
                             ).place(x=50,y=170)
-        del_button = tk.Button(self,
+        self.del_button = tk.Button(self,
                             text="Del",
                             compound="center",
                             command=lambda: self.statuslabel.set_label(self.screenlist.delete_item()),
@@ -119,10 +119,14 @@ class PrintScreen(tk.Frame):
         self.checkbox3.set_checkbox(global_settings['checkbox_options'][2])
         self.checkbox4 = MyCheckbox(parent=self,pos_x=192)
         self.checkbox4.set_checkbox(global_settings['checkbox_options'][3])
-
+        
         self.ontopcheckbox = MyCheckbox(parent=self,pos_x=300)
         self.ontopcheckbox.config(text="Stay on top")
         self.ontopcheckbox.config(command=self.toggleontop)
+
+        self.clipboardcheckbox = MyCheckbox(parent=self,pos_x=250)
+        self.clipboardcheckbox.config(text="Copy")
+        self.clipboardcheckbox.place(x=220,y=125)
 
         self.listentry=MyEntry(parent=self, entry_setts=[12, 90, 175])
         self.listentry.bind('<Return>', self.onenter_entry)
