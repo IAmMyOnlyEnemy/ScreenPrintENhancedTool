@@ -1,8 +1,6 @@
 TSO_dimmension: 460, 150, 1000, 600
 CICS_dimmension: 350, 200, 900, 550
 TSO_option: TSO
-checkbox_options: 0, 0, 0, 0
+checkbox_options: 0, 0, 1, 0
 screen_list: CONT, SAVE, TREC, TBLT, TREV
-CICS_screens: CONT, SAVE, ZAVE, TREC, ZREC, TREG, TRGU, TBLT, TREV
-active_window: 6882544, '*new 1 - Notepad++'
 save_path: C:/Users/enach/Desktop/Python/ScreensPrintENhancedTool/Teste
