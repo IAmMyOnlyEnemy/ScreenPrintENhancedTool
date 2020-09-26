@@ -1,15 +1,12 @@
 import tkinter as tk                
-import win32clipboard
 from tkinter import ttk            
 from tkinter import filedialog
 from PIL import ImageGrab
 from os import path
-from io import BytesIO
 from time import sleep
 from import_settings import get_settings, fill_file_from_dict
 from win32gui import EnumWindows, ShowWindow, GetWindowText, SetForegroundWindow
-from pynput.keyboard import Key, Controller as Key_Control
-from pynput.mouse import Button, Controller as Ms_Controller
+from my_functions import key_press_sim, get_spin_vals, copy_img_to_clip
 
 global mycolour
 #mycolour = None
@@ -255,6 +252,10 @@ class ChainPrints(tk.Frame):
         self.print_name = ""
 
     def bt_action(self):
+        '''
+            This is the command attached to button "Run"
+            It starts the process
+        '''
         self.goto_sleep()
         self.foyer_list = self.foy_text.get_list()
         self.action_list = self.action_text.get_list()
@@ -268,6 +269,9 @@ class ChainPrints(tk.Frame):
             self.spin2.spinNext()
                 
     def goto_sleep(self):
+        '''
+            Pause the processing
+        '''
         try:
             sleep(int(self.delayspin.get_spin()))
         except ValueError:
@@ -631,46 +635,7 @@ def take_printscreen(frame_op, screen_w, screen_h, image_name, copy_to_clip):
         Copy image to clipboard if option is on
     '''
     if copy_to_clip:
-        output = BytesIO()
-        img.convert('RGB').save(output, 'BMP')
-        data = output.getvalue()[14:]
-        output.close()
-        win32clipboard.OpenClipboard()
-        win32clipboard.EmptyClipboard()
-        win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
-        win32clipboard.CloseClipboard()
-
-def key_press_sim(str_to_type):
-    '''
-        Implement a key pressing simulator using pynput
-    '''
-    keyboard = Key_Control()
-    if str_to_type.upper() == "TAB":
-        keyboard.press(Key.tab)
-        keyboard.release(Key.tab)
-    elif str_to_type.upper() == "ENTER":
-        keyboard.press(Key.enter)
-        keyboard.release(Key.enter)
-    else:
-        keyboard.type(str_to_type)
-
-def get_spin_vals(is_num = True):
-    '''
-        Create a list for spinbox values as follows:
-            is_num = True  --> list of numbers from 1 to 25
-            is_num = False --> list of letters from A to Z
-    '''
-    vals = []
-    if not is_num:
-        for i in range(65, 91):
-            vals.append(chr(i))
-    else:
-        for i in range(1, 26):
-            if i<10:
-                vals.append("0" + str(i))
-            else:
-                vals.append(str(i))
-    return vals
+        copy_img_to_clip(img)
 
 if __name__ == "__main__":
     app = MainApp()
