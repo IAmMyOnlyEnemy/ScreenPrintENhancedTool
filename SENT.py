@@ -5,15 +5,8 @@ from PIL import ImageGrab
 from os import path
 from time import sleep
 from import_settings import get_settings, fill_file_from_dict
-from win32gui import EnumWindows, ShowWindow, GetWindowText, SetForegroundWindow
 from my_functions import key_press_sim, get_spin_vals, copy_img_to_clip
-
-global mycolour
-#mycolour = None
-#mycolour = "#00ffff"
-#mycolour = "black"
-mycolour = "LightCyan2"
-#mycolour = "turquoise"
+from win32gui import EnumWindows, ShowWindow, GetWindowText, SetForegroundWindow
 
 global global_settings
 global_settings = get_settings()
@@ -28,7 +21,10 @@ class MainApp(tk.Tk):
         self.maxsize(width=400,height=250)
         self.geometry("{0}x{1}".format(400, 250))
         
-        self.wm_iconbitmap("Images\\STEN_icon.ico")
+        try:
+            self.wm_iconbitmap("Images\\STEN_icon.ico")
+        except:
+            pass
 
         container = ttk.Notebook(self)
         container.pack(side="top", fill="both", expand=True)
@@ -43,9 +39,8 @@ class PrintScreen(tk.Frame):
     '''
         This frane is for manually saving images according to my desire
     '''
-
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self,parent,bg=mycolour)
+        tk.Frame.__init__(self,parent,bg=global_settings['app_colour'])
         self.controller = controller
 
         self.pathentry=MyEntry(parent=self, entry_setts=[51, 10, 8])
@@ -54,12 +49,16 @@ class PrintScreen(tk.Frame):
 
         self.reslabel=MyLabel(parent=self, label_setts=[18, "e", 245, 30])
 
-        self.image_bbr = tk.PhotoImage(file="Images\\Browse_button.png")
+        try:
+            self.image_bbr = tk.PhotoImage(file="Images\\Browse_button.png")
+        except:
+            self.image_bbr = None
+
         self.browse_button = tk.Button(self,
                             command=self.browse_command,
                             image=self.image_bbr,
                             text="Browse",
-                            background=mycolour,
+                            background=global_settings['app_colour'],
                             activebackground="DarkSeaGreen2",
                             compound=tk.LEFT
                             ).place(x=322,y=3)
@@ -106,12 +105,16 @@ class PrintScreen(tk.Frame):
         self.statuslabel=MyLabel(parent=self, label_setts=[35, "w", 10, 200])
         self.statuslabel.set_label("Ready!")
 
-        self.image_bpic = tk.PhotoImage(file="Images\\Pic_button.png")
+        try:
+            self.image_bpic = tk.PhotoImage(file="Images\\Pic_button.png")
+        except:
+            self.image_bpic = None
+            
         self.print_button = tk.Button(self,
                             command=self.pic_cmd,
                             image=self.image_bpic,
                             text="PrintScreen",
-                            background=mycolour,
+                            background=global_settings['app_colour'],
                             activebackground="DarkSeaGreen2",
                             compound=tk.TOP
                             ).place(x=297,y=90)
@@ -120,7 +123,7 @@ class PrintScreen(tk.Frame):
                             text="Up",
                             compound="center",
                             command=lambda: self.statuslabel.set_label(self.screenlist.move_up()),
-                            background=mycolour,
+                            background=global_settings['app_colour'],
                             activebackground="DarkSeaGreen2",
                             width=3
                             ).place(x=10,y=170)
@@ -129,7 +132,7 @@ class PrintScreen(tk.Frame):
                             text="Dn",
                             compound="center",
                             command=lambda: self.statuslabel.set_label(self.screenlist.move_down()),
-                            background=mycolour,
+                            background=global_settings['app_colour'],
                             activebackground="DarkSeaGreen2",
                             width=3
                             ).place(x=50,y=170)
@@ -141,7 +144,7 @@ class PrintScreen(tk.Frame):
                             text="Del",
                             compound="center",
                             command=lambda: self.statuslabel.set_label(self.screenlist.delete_item()),
-                            background=mycolour,
+                            background=global_settings['app_colour'],
                             activebackground="tomato",
                             width=4
                             ).place(x=170,y=170)
@@ -246,7 +249,7 @@ class ChainPrints(tk.Frame):
         This frane is for automatically saving images for a given list
     '''
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self,parent,bg=mycolour)
+        tk.Frame.__init__(self,parent,bg=global_settings['app_colour'])
         self.controller = controller
 
         button = tk.Button(self,
@@ -268,7 +271,7 @@ class ChainPrints(tk.Frame):
         frmaction.place(x=130,y=5)
         self.action_text = MyText(parent=frmaction)
 
-        self.progdropbox = myDropBox(parent=self)
+        self.progdropbox = MyDropBox(parent=self)
         self.progdropbox.config(bg="alice blue")
         self.progdropbox["menu"].config(bg="alice blue")
 
@@ -349,7 +352,7 @@ class MyEntry(tk.Entry):
     def __init__(self,parent,entry_setts):
         self.entry_var = tk.StringVar()
         tk.Entry.__init__(self,parent,
-                            #bg=mycolour,
+                            #bg=global_settings['app_colour'],
                             justify=tk.LEFT,
                             textvariable=self.entry_var,
                             width=entry_setts[0]
@@ -370,7 +373,7 @@ class MyLabel(tk.Label):
                             width=label_setts[0],
                             anchor=label_setts[1],
                             font=("Monospace",10),
-                            bg=mycolour,
+                            bg=global_settings['app_colour'],
                             justify=tk.LEFT
                             )
         self.label_var = tk.StringVar()
@@ -392,8 +395,8 @@ class MyRadiobutt(tk.Radiobutton):
                                 variable=op_val,
                                 anchor="n",
                                 width=4,
-                                background=mycolour,
-                                activebackground=mycolour,
+                                background=global_settings['app_colour'],
+                                activebackground=global_settings['app_colour'],
                                 selectcolor="spring green",
                                 indicatoron=0
                                 )
@@ -427,12 +430,14 @@ class MyList(tk.Listbox):
     def set_next(self):
         try:
             pos = self.curselection()[0] + 1
+            print("pos = {0}, listdim = {1}".format(pos,self.listdim))
             if pos < self.listdim:
                 self.selection_clear(0,tk.END)
                 self.select_set(pos)
             else:
                 pass
         except:
+            print("set next not possible")
             pass
 
     def insert_new(self,newitem):
@@ -440,9 +445,10 @@ class MyList(tk.Listbox):
         for i, listitem in enumerate(self.get(0,tk.END)):
             if listitem == newitem:
                 itemnotexist = False
+                break
 
         if itemnotexist:
-            self.listdim =+ 1
+            self.listdim += 1
             try:
                 pos=self.curselection()[0]
                 self.insert(pos+1, newitem)
@@ -490,7 +496,7 @@ class MySpinbox(tk.Spinbox):
         self.spin_var = tk.StringVar()
         tk.Spinbox.__init__(self,
                             parent,
-                            #bg=mycolour,
+                            #bg=global_settings['app_colour'],
                             textvariable=self.spin_var,
                             values=spinvals,
                             width=3,
@@ -547,8 +553,8 @@ class MyCheckbox(tk.Checkbutton):
         self.checkbox_var = tk.IntVar()
         tk.Checkbutton.__init__(self,
                                 parent,
-                                bg=mycolour,
-                                activebackground=mycolour,
+                                bg=global_settings['app_colour'],
+                                activebackground=global_settings['app_colour'],
                                 variable=self.checkbox_var,
                                 onvalue=1,
                                 offvalue=0
@@ -605,7 +611,7 @@ class MyComboBox(ttk.Combobox):
     def windowEnumerationHandler(self,hwnd,top_windows):
         top_windows.append((hwnd, GetWindowText(hwnd)))
 
-class myDropBox(tk.OptionMenu):
+class MyDropBox(tk.OptionMenu):
     def __init__(self,parent,bg="red"):
         #self.config(bg="GREEN")
         #self["menu"].config(bg="GREEN")

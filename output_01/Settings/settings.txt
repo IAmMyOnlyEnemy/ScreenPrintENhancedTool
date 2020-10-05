@@ -1,0 +1,9 @@
+TSO_dimmension: 460, 150, 1000, 600
+CICS_dimmension: 350, 200, 900, 550
+TSO_option: CICS
+checkbox_options: 0, 0, 0, 0
+screen_list: CONT, SAVE, TREC, TBLT, TREV
+CICS_screens: CONT, SAVE, ZAVE, TREC, ZREC, TREG, TRGU, TBLT, TREV
+active_window: 395174, '*new 1 - Notepad++'
+app_colour: LightCyan2
+save_path: C:\Users\enach\Desktop\Python\Environments\project2_env

@@ -1,63 +1,66 @@
 import win32clipboard
 from io import BytesIO
-from pynput.keyboard import Key, Controller as Key_Control
-from pynput.mouse import Button, Controller as Ms_Controller
+from pynput import keyboard
+from pynput import mouse
+#from pynput.mouse import Button, Controller as Ms_Controller
 
 def key_press_sim(str_to_type):
     '''
         Implement a key pressing simulator using pynput
     '''
-    keyboard = Key_Control()
     if str_to_type.upper() == "TAB":
-        keyboard.press(Key.tab)
-        keyboard.release(Key.tab)
+        press_single_key(keyboard.Key.tab)
     elif str_to_type.upper() == "ENTER":
-        keyboard.press(Key.enter)
-        keyboard.release(Key.enter)
+        press_single_key(keyboard.Key.enter)
     elif str_to_type.upper() == "PF1":
-        keyboard.press(Key.f1)
-        keyboard.release(Key.f1)
+        press_single_key(keyboard.Key.f1)
     elif str_to_type.upper() == "PF2":
-        keyboard.press(Key.f2)
-        keyboard.release(Key.f2)
+        press_single_key(keyboard.Key.f2)
     elif str_to_type.upper() == "PF3":
-        keyboard.press(Key.f3)
-        keyboard.release(Key.f3)
+        press_single_key(keyboard.Key.f3)
     elif str_to_type.upper() == "PF4":
-        keyboard.press(Key.f4)
-        keyboard.release(Key.f4)
+        press_single_key(keyboard.Key.f4)
     elif str_to_type.upper() == "PF5":
-        keyboard.press(Key.f5)
-        keyboard.release(Key.f5)
+        press_single_key(keyboard.Key.f5)
     elif str_to_type.upper() == "PF6":
-        keyboard.press(Key.f6)
-        keyboard.release(Key.f6)
+        press_single_key(keyboard.Key.f6)
     elif str_to_type.upper() == "PF7":
-        keyboard.press(Key.f7)
-        keyboard.release(Key.f7)
+        press_single_key(keyboard.Key.f7)
     elif str_to_type.upper() == "PF8":
-        keyboard.press(Key.f8)
-        keyboard.release(Key.f8)
+        press_single_key(keyboard.Key.f8)
     elif str_to_type.upper() == "PF9":
-        keyboard.press(Key.f9)
-        keyboard.release(Key.f9)
+        press_single_key(keyboard.Key.f9)
     elif str_to_type.upper() == "PF10":
-        keyboard.press(Key.f10)
-        keyboard.release(Key.f10)
-    elif str_to_type.upper() == "PF10":
-        keyboard.press(Key.f11)
-        keyboard.release(Key.f11)
+        press_single_key(keyboard.Key.f10)
+    elif str_to_type.upper() == "PF11":
+        press_single_key(keyboard.Key.f11)
     elif str_to_type.upper() == "PF12":
-        keyboard.press(Key.f12)
-        keyboard.release(Key.f12)
+        press_single_key(keyboard.Key.f12)
     elif str_to_type.upper() == "CLEAR":
-        keyboard.press(Key.pause)
-        keyboard.release(Key.pause)
+        press_single_key(keyboard.Key.pause)
     elif str_to_type.upper() == "SPACE":
-        keyboard.press(Key.space)
-        keyboard.release(Key.space)
+        press_single_key(keyboard.Key.space)
     else:
-        keyboard.type(str_to_type)
+        for i in str_to_type:
+            press_single_key(i)
+
+def press_single_key(input_key):
+    '''
+        Press a single key
+    '''
+    mykeyboard = keyboard.Controller()
+    mykeyboard.press(input_key)
+    mykeyboard.release(input_key)
+
+def position_mouse(x_pos=0, y_pos=0, press_b1=False):
+    '''
+        Move the mouse to a given location on screen and press left click if needed
+    '''
+    mymouse = mouse.Controller()
+    mymouse.position = (x_pos,y_pos)
+    if press_b1:
+        mymouse.press(mouse.Button.left)
+        mymouse.release(mouse.Button.left)
 
 def get_spin_vals(is_num = True):
     '''

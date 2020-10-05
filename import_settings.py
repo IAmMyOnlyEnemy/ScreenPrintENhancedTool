@@ -1,7 +1,12 @@
 import pathlib
+import os
 from os import path
 
 def get_settings():
+	try:
+		os.mkdir("Settings")
+	except OSError:
+		pass
 	''' ---------------
 	Global values:
 	    --------------- '''
@@ -25,6 +30,9 @@ def get_settings():
 	return settings_dict
 
 def fill_dict(file_name,settings_dict):
+	'''
+	Read the settings file and fill the dictionary with global settings
+	'''
 	file1 = open(file_name,'r')
 	lines = file1.read().splitlines()
 	for line in lines:
@@ -52,8 +60,9 @@ def fill_file(file_name):
 	file1.writelines("TSO_option: CICS\n")
 	file1.writelines("checkbox_options: 0, 0, 0, 0\n")
 	file1.writelines("screen_list: CONT, SAVE, TREC, TBLT, TREV\n")
-	file1.writelines("CICS_screens: CONT, SAVE, ZAVE, TREC, ZREC, TREG, TRGU, TBLT, TREV\n")
+	file1.writelines("CICS_screens: CONT, SAVE, ZAVE, TREC, ZREC, TREG, TRGU, TBLT, TREV, TBER, ZBER\n")
 	file1.writelines("active_window: 198392, Google\n")
+	file1.writelines("app_colour: LightCyan2\n")
 	file1.writelines("save_path: {0}".format(pathlib.Path().absolute()))
 	file1.close()
 
