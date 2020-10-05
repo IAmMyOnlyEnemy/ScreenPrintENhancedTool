@@ -50,6 +50,12 @@ def key_press_sim(str_to_type):
     elif str_to_type.upper() == "PF12":
         keyboard.press(Key.f12)
         keyboard.release(Key.f12)
+    elif str_to_type.upper() == "CLEAR":
+        keyboard.press(Key.pause)
+        keyboard.release(Key.pause)
+    elif str_to_type.upper() == "SPACE":
+        keyboard.press(Key.space)
+        keyboard.release(Key.space)
     else:
         keyboard.type(str_to_type)
 

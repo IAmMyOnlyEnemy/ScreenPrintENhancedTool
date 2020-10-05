@@ -10,7 +10,10 @@ from my_functions import key_press_sim, get_spin_vals, copy_img_to_clip
 
 global mycolour
 #mycolour = None
-mycolour = "#00ffff"
+#mycolour = "#00ffff"
+#mycolour = "black"
+mycolour = "LightCyan2"
+#mycolour = "turquoise"
 
 global global_settings
 global_settings = get_settings()
@@ -37,75 +40,29 @@ class MainApp(tk.Tk):
         container.add(CPFrame,text="Chain Prints")
 
 class PrintScreen(tk.Frame):
+    '''
+        This frane is for manually saving images according to my desire
+    '''
+
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent,bg=mycolour)
+        tk.Frame.__init__(self,parent,bg=mycolour)
         self.controller = controller
 
         self.pathentry=MyEntry(parent=self, entry_setts=[51, 10, 8])
         self.imglabel=MyLabel(parent=self, label_setts=[25, "w", 10, 30])
         self.imglabel.config(justify=tk.LEFT)
 
-        frmrdbt = tk.Frame(self,width=15, height=10)
-        frmrdbt.place(x=240,y=55)
-        self.tso_option=tk.StringVar()
-        self.tso_option.set(global_settings['TSO_option'][0])
         self.reslabel=MyLabel(parent=self, label_setts=[18, "e", 245, 30])
-        cics_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.tso_option,val="CICS")
-        tso_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.tso_option,val="TSO")
-        cics_radbutt.config(command=self.update_frame_res)
-        tso_radbutt.config(command=self.update_frame_res)
-        
-        self.update_frame_res()
-        self.statuslabel=MyLabel(parent=self, label_setts=[35, "w", 10, 200])
-        self.statuslabel.set_label("Ready!")
 
         self.image_bbr = tk.PhotoImage(file="Images\\Browse_button.png")
         self.browse_button = tk.Button(self,
                             command=self.browse_command,
                             image=self.image_bbr,
                             text="Browse",
+                            background=mycolour,
+                            activebackground="DarkSeaGreen2",
                             compound=tk.LEFT
                             ).place(x=322,y=3)
-        self.image_bpic = tk.PhotoImage(file="Images\\Pic_button.png")
-        self.print_button = tk.Button(self,
-                            command=self.pic_cmd,
-                            image=self.image_bpic,
-                            text="PrintScreen",
-                            compound=tk.TOP
-                            ).place(x=297,y=90)
-        self.up_button = tk.Button(self,
-                            text="Up",
-                            compound="center",
-                            command=lambda: self.statuslabel.set_label(self.screenlist.move_up()),
-                            width=3
-                            ).place(x=10,y=170)
-        self.down_button = tk.Button(self,
-                            text="Dn",
-                            compound="center",
-                            command=lambda: self.statuslabel.set_label(self.screenlist.move_down()),
-                            width=3
-                            ).place(x=50,y=170)
-        self.del_button = tk.Button(self,
-                            text="Del",
-                            compound="center",
-                            command=lambda: self.statuslabel.set_label(self.screenlist.delete_item()),
-                            width=4
-                            ).place(x=170,y=170)
-
-        frmlst = tk.Frame(self,width=15, height=50)
-        frmlst.place(x=90,y=80)
-
-        self.screenlist = MyList(parent=frmlst)
-        self.screenlist.bind('<<ListboxSelect>>', self.onselect_listbox)
-
-        num_vals = get_spin_vals()
-        lett_vals = get_spin_vals(is_num=False)
-        self.spin1 = MySpinbox(parent=self,spinvals=num_vals,pos_x=10)
-        self.spin1.config(command=self.set_img_name)
-        self.spin2 = MySpinbox(parent=self,spinvals=lett_vals,pos_x=50)
-        self.spin2.config(command=self.set_img_name)
-        self.spin3 = MySpinbox(parent=self,spinvals=num_vals,pos_x=190)
-        self.spin3.config(command=self.set_img_name)
 
         self.checkbox1 = MyCheckbox(parent=self,pos_x=12)
         self.checkbox1.set_checkbox(global_settings['checkbox_options'][0])
@@ -116,20 +73,89 @@ class PrintScreen(tk.Frame):
         self.checkbox4 = MyCheckbox(parent=self,pos_x=192)
         self.checkbox4.set_checkbox(global_settings['checkbox_options'][3])
         
+        frmrdbt = tk.Frame(self,width=15, height=10)
+        frmrdbt.place(x=240,y=55)
+        self.tso_option=tk.StringVar()
+        self.tso_option.set(global_settings['TSO_option'][0])
+        
+        cics_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.tso_option,val="CICS")
+        tso_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.tso_option,val="TSO")
+        cics_radbutt.config(command=self.update_frame_res)
+        tso_radbutt.config(command=self.update_frame_res)
+        self.update_frame_res()
+
         self.ontopcheckbox = MyCheckbox(parent=self,pos_x=300)
         self.ontopcheckbox.config(text="Stay on top")
         self.ontopcheckbox.config(command=self.toggleontop)
+        
+        num_vals = get_spin_vals()
+        lett_vals = get_spin_vals(is_num=False)
+        self.spin1 = MySpinbox(parent=self,spinvals=num_vals,pos_x=10)
+        self.spin1.config(command=self.set_img_name)
+        self.spin2 = MySpinbox(parent=self,spinvals=lett_vals,pos_x=50)
+        self.spin2.config(command=self.set_img_name)
 
+        frmlst = tk.Frame(self,width=15, height=50)
+        frmlst.place(x=90,y=80)
+        self.screenlist = MyList(parent=frmlst)
+        self.screenlist.bind('<<ListboxSelect>>', self.onselect_listbox)
+
+        self.spin3 = MySpinbox(parent=self,spinvals=num_vals,pos_x=190)
+        self.spin3.config(command=self.set_img_name)
+        
+        self.statuslabel=MyLabel(parent=self, label_setts=[35, "w", 10, 200])
+        self.statuslabel.set_label("Ready!")
+
+        self.image_bpic = tk.PhotoImage(file="Images\\Pic_button.png")
+        self.print_button = tk.Button(self,
+                            command=self.pic_cmd,
+                            image=self.image_bpic,
+                            text="PrintScreen",
+                            background=mycolour,
+                            activebackground="DarkSeaGreen2",
+                            compound=tk.TOP
+                            ).place(x=297,y=90)
+
+        self.up_button = tk.Button(self,
+                            text="Up",
+                            compound="center",
+                            command=lambda: self.statuslabel.set_label(self.screenlist.move_up()),
+                            background=mycolour,
+                            activebackground="DarkSeaGreen2",
+                            width=3
+                            ).place(x=10,y=170)
+
+        self.down_button = tk.Button(self,
+                            text="Dn",
+                            compound="center",
+                            command=lambda: self.statuslabel.set_label(self.screenlist.move_down()),
+                            background=mycolour,
+                            activebackground="DarkSeaGreen2",
+                            width=3
+                            ).place(x=50,y=170)
+
+        self.listentry=MyEntry(parent=self, entry_setts=[12, 90, 175])
+        self.listentry.bind('<Return>', self.onenter_entry)
+
+        self.del_button = tk.Button(self,
+                            text="Del",
+                            compound="center",
+                            command=lambda: self.statuslabel.set_label(self.screenlist.delete_item()),
+                            background=mycolour,
+                            activebackground="tomato",
+                            width=4
+                            ).place(x=170,y=170)
+        
         self.clipboardcheckbox = MyCheckbox(parent=self,pos_x=250)
         self.clipboardcheckbox.config(text="Copy")
         self.clipboardcheckbox.place(x=320,y=198)
 
-        self.listentry=MyEntry(parent=self, entry_setts=[12, 90, 175])
-        self.listentry.bind('<Return>', self.onenter_entry)
-        
         self.set_img_name()
 
     def browse_command(self):
+        '''
+            Get the folder adress where the pictures will be saved
+        '''
         folder_path = filedialog.askdirectory(
             title="Select where to save the images",
             initialdir=self.pathentry.get_entry()
@@ -140,6 +166,9 @@ class PrintScreen(tk.Frame):
         self.update_settings()
 
     def pic_cmd(self):
+        '''
+            Save the print screen as jpg
+        '''
         try:
             take_printscreen(frame_op = self.tso_option.get(),
                             screen_w = self.winfo_screenwidth(), 
@@ -177,9 +206,6 @@ class PrintScreen(tk.Frame):
         else:
             self.imglabel.config(fg="Black")
 
-    def onselect_listbox(self, evt):
-        self.set_img_name()
-
     def update_frame_res(self):
         self.reslabel.set_label(
                 "{0} x {1} [{2}x{3}]".format(
@@ -189,6 +215,9 @@ class PrintScreen(tk.Frame):
                                     self.winfo_screenheight()
                                     )
                                 )
+
+    def onselect_listbox(self, evt):
+        self.set_img_name()
 
     def onenter_entry(self,evt):
         self.screenlist.insert_new(self.listentry.get_entry())
@@ -213,13 +242,18 @@ class PrintScreen(tk.Frame):
         fill_file_from_dict("Settings\\settings.txt",global_settings)
 
 class ChainPrints(tk.Frame):
+    '''
+        This frane is for automatically saving images for a given list
+    '''
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self,parent,bg=mycolour)
         self.controller = controller
 
         button = tk.Button(self,
                             text="Run",
                             width=8,
+                            background="green2",
+                            activebackground="OrangeRed2",
                             command=self.bt_action
                             )
         button.place(x=331,y=198)
@@ -235,6 +269,8 @@ class ChainPrints(tk.Frame):
         self.action_text = MyText(parent=frmaction)
 
         self.progdropbox = myDropBox(parent=self)
+        self.progdropbox.config(bg="alice blue")
+        self.progdropbox["menu"].config(bg="alice blue")
 
         num_vals = get_spin_vals()
         lett_vals = get_spin_vals(is_num=False)
@@ -354,9 +390,11 @@ class MyRadiobutt(tk.Radiobutton):
                                 text=val,
                                 value=val,
                                 variable=op_val,
-                                anchor="w",
+                                anchor="n",
                                 width=4,
-                                bg=mycolour,
+                                background=mycolour,
+                                activebackground=mycolour,
+                                selectcolor="spring green",
                                 indicatoron=0
                                 )
         self.pack(fill=tk.BOTH)
@@ -510,6 +548,7 @@ class MyCheckbox(tk.Checkbutton):
         tk.Checkbutton.__init__(self,
                                 parent,
                                 bg=mycolour,
+                                activebackground=mycolour,
                                 variable=self.checkbox_var,
                                 onvalue=1,
                                 offvalue=0
@@ -543,12 +582,12 @@ class MyText(tk.Text):
         txtlist = []
         line_list = self.get('1.0', 'end').split('\n')
         for line in line_list:
-            if line != '':
-                txtlist.append(line)
+            if line.strip() != '':
+                txtlist.append(line.strip().upper())
         return txtlist
 
 class MyComboBox(ttk.Combobox):
-    def __init__(self,parent):
+    def __init__(self,parent,bg="red"):
         progs = []
         top_windows = []
         EnumWindows(self.windowEnumerationHandler, top_windows)
@@ -567,7 +606,9 @@ class MyComboBox(ttk.Combobox):
         top_windows.append((hwnd, GetWindowText(hwnd)))
 
 class myDropBox(tk.OptionMenu):
-    def __init__(self,parent):
+    def __init__(self,parent,bg="red"):
+        #self.config(bg="GREEN")
+        #self["menu"].config(bg="GREEN")
         progs = []
         top_windows = []
         EnumWindows(self.windowEnumerationHandler, top_windows)
