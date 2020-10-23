@@ -2,7 +2,6 @@ import win32clipboard
 from io import BytesIO
 from pynput import keyboard
 from pynput import mouse
-#from pynput.mouse import Button, Controller as Ms_Controller
 
 def key_press_sim(str_to_type):
     '''
@@ -41,8 +40,11 @@ def key_press_sim(str_to_type):
     elif str_to_type.upper() == "SPACE":
         press_single_key(keyboard.Key.space)
     else:
-        for i in str_to_type:
-            press_single_key(i)
+        #for i in str_to_type:
+        #    press_single_key(i)
+        copy_paste_text(str_to_type)
+        press_two_keys(keyboard.Key.ctrl,"v")
+
 
 def press_single_key(input_key):
     '''
@@ -51,6 +53,12 @@ def press_single_key(input_key):
     mykeyboard = keyboard.Controller()
     mykeyboard.press(input_key)
     mykeyboard.release(input_key)
+
+def press_two_keys(hold_key,press_key):
+    mykeyboard = keyboard.Controller()
+    with mykeyboard.pressed(hold_key):
+        mykeyboard.press(press_key)
+        mykeyboard.release(press_key)
 
 def position_mouse(x_pos=0, y_pos=0, press_b1=False):
     '''
@@ -91,4 +99,14 @@ def copy_img_to_clip(img = None):
     win32clipboard.OpenClipboard()
     win32clipboard.EmptyClipboard()
     win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
+    win32clipboard.CloseClipboard()
+
+def copy_paste_text(my_text):
+    '''
+        Copy text to clipboard
+    '''
+    #my_text = my_text.decode('utf8')
+    win32clipboard.OpenClipboard()
+    win32clipboard.EmptyClipboard()
+    win32clipboard.SetClipboardText(my_text, win32clipboard.CF_UNICODETEXT)
     win32clipboard.CloseClipboard()

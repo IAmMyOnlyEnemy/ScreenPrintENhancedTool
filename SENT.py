@@ -303,7 +303,7 @@ class ChainPrints(tk.Frame):
             self.print_name = ""
             for self.act in self.action_list:
                 self.goto_sleep()
-                self.progdropbox.bring_to_front()
+                #self.progdropbox.bring_to_front()
                 self.action_time()
             self.spin2.spinNext()
                 
@@ -613,13 +613,17 @@ class MyComboBox(ttk.Combobox):
 
 class MyDropBox(tk.OptionMenu):
     def __init__(self,parent,bg="red"):
-        #self.config(bg="GREEN")
-        #self["menu"].config(bg="GREEN")
         progs = []
         top_windows = []
         EnumWindows(self.windowEnumerationHandler, top_windows)
+        except_list = ['',
+                        'Default IME',
+                        'MSCTFIME UI',
+                        'Window',
+                        'Settings'
+                        ]
         for i in top_windows:
-            if i[1] != '':
+            if i[1] not in except_list:
                 progs.append([i[0],i[1]])
         progs.sort()
         self.myvar = tk.StringVar()
