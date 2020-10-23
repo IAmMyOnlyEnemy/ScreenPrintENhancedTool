@@ -1,7 +1,13 @@
 # ScreenPrintENhancedTool
-This is a Python program done in order to help me with the daily work and to make the routine of completing a test book more enjoyable.
+This is a Python program done in order to help me with the daily work and to make the routine of completing a test book more enjoyable. It was pure fun to code it and learn Python along the way.
 
-This are the requirements it needs to achive:
+## How to run the app
+Download it from /output folder. In order to function proper, it also requires the /Images folder
+
+## How to use the app
+Click on buttons and see what happens. Also play with settings from setting.txt file. It's self explanatory for the most part. For details check the wiki of this project.
+
+## My requirements of the app
   - Make a print screen of a given area of the screen and save it as an image file on the disc
   - Allow easy access to at least 2 dimensions of the frame
   - Keep a simple, but consistent naming metodology. This should reflect the test book structure: 01 Test Situation 1 / A Test case a / Test case a proof_01 / Test case a proof_02
