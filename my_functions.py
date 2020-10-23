@@ -39,9 +39,15 @@ def key_press_sim(str_to_type):
         press_single_key(keyboard.Key.pause)
     elif str_to_type.upper() == "SPACE":
         press_single_key(keyboard.Key.space)
+    elif str_to_type.upper() == "DOWN":
+        press_single_key(keyboard.Key.down)
+    elif str_to_type.upper() == "UP":
+        press_single_key(keyboard.Key.up)
+    elif str_to_type.upper() == "RIGHT":
+        press_single_key(keyboard.Key.right)
+    elif str_to_type.upper() == "LEFT":
+        press_single_key(keyboard.Key.left)
     else:
-        #for i in str_to_type:
-        #    press_single_key(i)
         copy_paste_text(str_to_type)
         press_two_keys(keyboard.Key.ctrl,"v")
 

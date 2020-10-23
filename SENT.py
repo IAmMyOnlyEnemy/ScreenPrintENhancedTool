@@ -303,7 +303,7 @@ class ChainPrints(tk.Frame):
             self.print_name = ""
             for self.act in self.action_list:
                 self.goto_sleep()
-                #self.progdropbox.bring_to_front()
+                self.progdropbox.bring_to_front()
                 self.action_time()
             self.spin2.spinNext()
                 
@@ -323,6 +323,8 @@ class ChainPrints(tk.Frame):
         if self.act in global_settings['CICS_screens']:
             if self.act == "CONT":
                 key_press_sim("{0} {1}".format(self.act,self.foyer))
+            elif self.act[0] == 'Z':
+                key_press_sim("PF9")
             else:
                 key_press_sim(self.act)
             self.print_name = "{0}{1}_{2}_{3}".format(
@@ -331,6 +333,30 @@ class ChainPrints(tk.Frame):
                                         self.act,
                                         self.spin3.get_spin()
                                         )
+        elif self.act[:4].upper() == 'DOWN':
+            try:
+                for i in range(0, int(self.act[5:].strip())):
+                    key_press_sim("DOWN")
+            except:
+                pass
+        elif self.act[:2].upper() == 'UP':
+            try:
+                for i in range(0, int(self.act[3:].strip())):
+                    key_press_sim("UP")
+            except:
+                pass
+        elif self.act[:5].upper() == 'RIGHT':
+            try:
+                for i in range(0, int(self.act[6:].strip())):
+                    key_press_sim("RIGHT")
+            except:
+                pass
+        elif self.act[:4].upper() == 'LEFT':
+            try:
+                for i in range(0, int(self.act[5:].strip())):
+                    key_press_sim("LEFT")
+            except:
+                pass
         elif self.act.upper() == "PIC":
             try:
                 take_printscreen(
@@ -345,14 +371,13 @@ class ChainPrints(tk.Frame):
                 self.statuslabel.set_label("Could not save image")
         else:
             self.goto_sleep()
-            self.statuslabel.set_label("Case {0}, operation {1}".format(self.foyer,self.act))
             key_press_sim("{0}".format(self.act))
+        self.statuslabel.set_label("Case {0}, operation {1}".format(self.foyer,self.act))
 
 class MyEntry(tk.Entry):
     def __init__(self,parent,entry_setts):
         self.entry_var = tk.StringVar()
         tk.Entry.__init__(self,parent,
-                            #bg=global_settings['app_colour'],
                             justify=tk.LEFT,
                             textvariable=self.entry_var,
                             width=entry_setts[0]
