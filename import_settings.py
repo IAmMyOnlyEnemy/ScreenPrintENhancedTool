@@ -1,17 +1,12 @@
 import pathlib
-import os
 from os import path
 
 def get_settings():
-	try:
-		os.mkdir("Settings")
-	except OSError:
-		pass
 	''' ---------------
 	Global values:
 	    --------------- '''
 	settings_dict = {}
-	file_name = "Settings\\settings.txt"
+	file_name = "settings.txt"
 
 	''' ---------------
 	Fill the input file if there is none:

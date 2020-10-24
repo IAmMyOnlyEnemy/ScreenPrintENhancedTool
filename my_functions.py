@@ -7,47 +7,31 @@ def key_press_sim(str_to_type):
     '''
         Implement a key pressing simulator using pynput
     '''
-    if str_to_type.upper() == "TAB":
-        press_single_key(keyboard.Key.tab)
-    elif str_to_type.upper() == "ENTER":
-        press_single_key(keyboard.Key.enter)
-    elif str_to_type.upper() == "PF1":
-        press_single_key(keyboard.Key.f1)
-    elif str_to_type.upper() == "PF2":
-        press_single_key(keyboard.Key.f2)
-    elif str_to_type.upper() == "PF3":
-        press_single_key(keyboard.Key.f3)
-    elif str_to_type.upper() == "PF4":
-        press_single_key(keyboard.Key.f4)
-    elif str_to_type.upper() == "PF5":
-        press_single_key(keyboard.Key.f5)
-    elif str_to_type.upper() == "PF6":
-        press_single_key(keyboard.Key.f6)
-    elif str_to_type.upper() == "PF7":
-        press_single_key(keyboard.Key.f7)
-    elif str_to_type.upper() == "PF8":
-        press_single_key(keyboard.Key.f8)
-    elif str_to_type.upper() == "PF9":
-        press_single_key(keyboard.Key.f9)
-    elif str_to_type.upper() == "PF10":
-        press_single_key(keyboard.Key.f10)
-    elif str_to_type.upper() == "PF11":
-        press_single_key(keyboard.Key.f11)
-    elif str_to_type.upper() == "PF12":
-        press_single_key(keyboard.Key.f12)
-    elif str_to_type.upper() == "CLEAR":
-        press_single_key(keyboard.Key.pause)
-    elif str_to_type.upper() == "SPACE":
-        press_single_key(keyboard.Key.space)
-    elif str_to_type.upper() == "DOWN":
-        press_single_key(keyboard.Key.down)
-    elif str_to_type.upper() == "UP":
-        press_single_key(keyboard.Key.up)
-    elif str_to_type.upper() == "RIGHT":
-        press_single_key(keyboard.Key.right)
-    elif str_to_type.upper() == "LEFT":
-        press_single_key(keyboard.Key.left)
-    else:
+    my_keys = dict(
+                    TAB = keyboard.Key.tab,
+                    ENTER = keyboard.Key.enter,
+                    CLEAR = keyboard.Key.pause,
+                    SPACE = keyboard.Key.space,
+                    DOWN = keyboard.Key.down,
+                    UP = keyboard.Key.up,
+                    RIGHT = keyboard.Key.right,
+                    LEFT = keyboard.Key.left,
+                    PF1 = keyboard.Key.f1,
+                    PF2 = keyboard.Key.f2,
+                    PF3 = keyboard.Key.f3,
+                    PF4 = keyboard.Key.f4,
+                    PF5 = keyboard.Key.f5,
+                    PF6 = keyboard.Key.f6,
+                    PF7 = keyboard.Key.f7,
+                    PF8 = keyboard.Key.f8,
+                    PF9 = keyboard.Key.f9,
+                    PF10 = keyboard.Key.f10,
+                    PF11 = keyboard.Key.f11,
+                    PF12 = keyboard.Key.f12
+                    )
+    try:
+        press_single_key(my_keys[str_to_type.upper()])
+    except:
         copy_paste_text(str_to_type)
         press_two_keys(keyboard.Key.ctrl,"v")
 

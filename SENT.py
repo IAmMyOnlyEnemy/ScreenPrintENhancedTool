@@ -521,7 +521,6 @@ class MySpinbox(tk.Spinbox):
         self.spin_var = tk.StringVar()
         tk.Spinbox.__init__(self,
                             parent,
-                            #bg=global_settings['app_colour'],
                             textvariable=self.spin_var,
                             values=spinvals,
                             width=3,
