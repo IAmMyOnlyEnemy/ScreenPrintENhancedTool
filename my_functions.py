@@ -16,6 +16,11 @@ def key_press_sim(str_to_type):
                     UP = keyboard.Key.up,
                     RIGHT = keyboard.Key.right,
                     LEFT = keyboard.Key.left,
+                    RCTRL = keyboard.Key.ctrl_r,
+                    LCTRL = keyboard.Key.ctrl_l,
+                    DELETE = keyboard.Key.delete,
+                    BACKSPACE = keyboard.Key.backspace,
+                    ESC = keyboard.Key.esc,
                     PF1 = keyboard.Key.f1,
                     PF2 = keyboard.Key.f2,
                     PF3 = keyboard.Key.f3,
@@ -71,7 +76,7 @@ def get_spin_vals(is_num = True):
         for i in range(65, 91):
             vals.append(chr(i))
     else:
-        for i in range(1, 26):
+        for i in range(1, 100):
             if i<10:
                 vals.append("0" + str(i))
             else:
