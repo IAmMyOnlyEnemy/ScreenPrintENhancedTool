@@ -242,7 +242,7 @@ class PrintScreen(tk.Frame):
         global_settings["screen_list"] = []
         for i, list_value in enumerate(self.screenlist.get(0, tk.END)):
             global_settings["screen_list"].append(list_value)
-        fill_file_from_dict("Settings\\settings.txt",global_settings)
+        fill_file_from_dict("settings.txt",global_settings)
 
 class ChainPrints(tk.Frame):
     '''
