@@ -17,9 +17,9 @@ class MainApp(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title("Screen ENhanced Tool")
 
-        self.minsize(width=400,height=250)
-        self.maxsize(width=400,height=250)
-        self.geometry("{0}x{1}".format(400, 250))
+        self.minsize(width=400,height=305)
+        self.maxsize(width=400,height=305)
+        self.geometry("{0}x{1}".format(400, 305))
         
         try:
             self.wm_iconbitmap("Images\\STEN_icon.ico")
@@ -102,7 +102,7 @@ class PrintScreen(tk.Frame):
         self.spin3 = MySpinbox(parent=self,spinvals=num_vals,pos_x=190)
         self.spin3.config(command=self.set_img_name)
         
-        self.statuslabel=MyLabel(parent=self, label_setts=[35, "w", 10, 200])
+        self.statuslabel=MyLabel(parent=self, label_setts=[35, "w", 10, 255])
         self.statuslabel.set_label("Ready!")
 
         try:
@@ -125,29 +125,29 @@ class PrintScreen(tk.Frame):
                             command=lambda: self.statuslabel.set_label(self.screenlist.move_up()),
                             background=global_settings['app_colour'],
                             activebackground="DarkSeaGreen2",
-                            width=3
-                            ).place(x=10,y=170)
+                            width=9
+                            ).place(x=10,y=110)
 
         self.down_button = tk.Button(self,
-                            text="Dn",
+                            text="Down",
                             compound="center",
                             command=lambda: self.statuslabel.set_label(self.screenlist.move_down()),
                             background=global_settings['app_colour'],
                             activebackground="DarkSeaGreen2",
-                            width=3
-                            ).place(x=50,y=170)
+                            width=9
+                            ).place(x=10,y=140)
 
-        self.listentry=MyEntry(parent=self, entry_setts=[12, 90, 175])
+        self.listentry=MyEntry(parent=self, entry_setts=[12, 10, 180])
         self.listentry.bind('<Return>', self.onenter_entry)
 
         self.del_button = tk.Button(self,
-                            text="Del",
+                            text="Delete",
                             compound="center",
                             command=lambda: self.statuslabel.set_label(self.screenlist.delete_item()),
                             background=global_settings['app_colour'],
                             activebackground="tomato",
-                            width=4
-                            ).place(x=170,y=170)
+                            width=9
+                            ).place(x=10,y=210)
         
         self.clipboardcheckbox = MyCheckbox(parent=self,pos_x=250)
         self.clipboardcheckbox.config(text="Copy")
@@ -259,7 +259,7 @@ class ChainPrints(tk.Frame):
                             activebackground="OrangeRed2",
                             command=self.bt_action
                             )
-        button.place(x=331,y=198)
+        button.place(x=331,y=251)
 
         self.CICS_options = global_settings['CICS_screens']
 
@@ -285,7 +285,7 @@ class ChainPrints(tk.Frame):
         self.spin2 = MySpinbox(parent=self,spinvals=lett_vals,pos_x=290)
         self.spin3 = MySpinbox(parent=self,spinvals=num_vals,pos_x=330)
 
-        self.statuslabel = MyLabel(parent=self, label_setts=[40, "w", 5, 202])
+        self.statuslabel = MyLabel(parent=self, label_setts=[40, "w", 5, 255])
         self.statuslabel.set_label("Ready!")
 
         self.print_name = ""
@@ -434,7 +434,7 @@ class MyList(tk.Listbox):
                             exportselection=0,
                             font=("Monospace",10),
                             selectmode=tk.SINGLE,
-                            height=5,
+                            height=10,
                             width=10
                             )
         
@@ -531,7 +531,7 @@ class MySpinbox(tk.Spinbox):
     def spinNext(self):
         next_idx = self.spin_var.get()
         try:
-            if self.spin_var.get() == "25":
+            if self.spin_var.get() == "99":
                 pass
             else:
                 next_idx = str(int(self.spin_var.get()) + 1)
@@ -599,7 +599,7 @@ class MyText(tk.Text):
         tk.Text.__init__(self,
                         parent,
                         width=12,
-                        height=12
+                        height=15
                         )
         scrollb = tk.Scrollbar(parent,
                                 orient="vertical",
