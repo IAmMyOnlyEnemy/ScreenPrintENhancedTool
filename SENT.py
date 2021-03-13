@@ -31,13 +31,15 @@ class MainApp(tk.Tk):
 
         PSFrame = PrintScreen(parent=container, controller=self)
         CPFrame = ChainPrints(parent=container, controller=self)
+        STFrame = SettingTab(parent=container, controller=self)
 
         container.add(PSFrame,text="Print Screen")
         container.add(CPFrame,text="Chain Prints")
+        container.add(STFrame,text="Settings")
 
 class PrintScreen(tk.Frame):
     '''
-        This frane is for manually saving images according to my desire
+        This frame is for manually saving images according to my desire
     '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent,bg=global_settings['app_colour'])
@@ -74,13 +76,15 @@ class PrintScreen(tk.Frame):
         
         frmrdbt = tk.Frame(self,width=15, height=10)
         frmrdbt.place(x=240,y=55)
-        self.tso_option=tk.StringVar()
-        self.tso_option.set(global_settings['TSO_option'][0])
+        self.screen_option=tk.StringVar()
+        self.screen_option.set(global_settings['screen_option'][0])
         
-        cics_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.tso_option,val="CICS")
-        tso_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.tso_option,val="TSO")
-        cics_radbutt.config(command=self.update_frame_res)
-        tso_radbutt.config(command=self.update_frame_res)
+        opt1_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt1")
+        opt2_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt2")
+        opt3_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt3")
+        opt1_radbutt.config(command=self.update_frame_res)
+        opt2_radbutt.config(command=self.update_frame_res)
+        opt3_radbutt.config(command=self.update_frame_res)
         self.update_frame_res()
 
         self.ontopcheckbox = MyCheckbox(parent=self,pos_x=300)
@@ -173,7 +177,7 @@ class PrintScreen(tk.Frame):
             Save the print screen as jpg
         '''
         try:
-            take_printscreen(frame_op = self.tso_option.get(),
+            take_printscreen(frame_op = self.screen_option.get(),
                             screen_w = self.winfo_screenwidth(), 
                             screen_h = self.winfo_screenheight(), 
                             image_name = self.imglabel.get_label(), 
@@ -212,8 +216,8 @@ class PrintScreen(tk.Frame):
     def update_frame_res(self):
         self.reslabel.set_label(
                 "{0} x {1} [{2}x{3}]".format(
-                                    global_settings[self.tso_option.get() + '_dimmension'][2],
-                                    global_settings[self.tso_option.get() + '_dimmension'][3],
+                                    global_settings[self.screen_option.get() + '_dimmension'][2],
+                                    global_settings[self.screen_option.get() + '_dimmension'][3],
                                     self.winfo_screenwidth(),
                                     self.winfo_screenheight()
                                     )
@@ -234,7 +238,7 @@ class PrintScreen(tk.Frame):
             self.statuslabel.set_label("Always on top deactivated")
 
     def update_settings(self):
-        global_settings['TSO_option'][0] = self.tso_option.get()
+        global_settings['screen_option'][0] = self.screen_option.get()
         global_settings["checkbox_options"][0] = int(self.checkbox1.get_checkbox()==True)
         global_settings["checkbox_options"][1] = int(self.checkbox2.get_checkbox()==True)
         global_settings["checkbox_options"][2] = int(self.checkbox3.get_checkbox()==True)
@@ -246,7 +250,7 @@ class PrintScreen(tk.Frame):
 
 class ChainPrints(tk.Frame):
     '''
-        This frane is for automatically saving images for a given list
+        This frame is for automatically saving images for a given list
     '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent,bg=global_settings['app_colour'])
@@ -261,7 +265,7 @@ class ChainPrints(tk.Frame):
                             )
         button.place(x=331,y=251)
 
-        self.CICS_options = global_settings['CICS_screens']
+        self.my_options = global_settings['my_screens']
 
         frmfoy = tk.Frame(self)
         frmfoy.place(x=5,y=5)
@@ -320,7 +324,7 @@ class ChainPrints(tk.Frame):
         '''
             Evaluate the type of action to be performed:
         '''
-        if self.act in global_settings['CICS_screens']:
+        if self.act in global_settings['my_screens']:
             if self.act == "CONT":
                 key_press_sim("{0} {1}".format(self.act,self.foyer))
             elif self.act[0] == 'Z':
@@ -360,7 +364,7 @@ class ChainPrints(tk.Frame):
         elif self.act.upper() == "PIC":
             try:
                 take_printscreen(
-                                frame_op = "CICS",
+                                frame_op = "opt1",
                                 screen_w = self.winfo_screenwidth(), 
                                 screen_h = self.winfo_screenheight(),
                                 image_name = self.print_name,
@@ -373,6 +377,66 @@ class ChainPrints(tk.Frame):
             self.goto_sleep()
             key_press_sim("{0}".format(self.act))
         self.statuslabel.set_label("Case {0}, operation {1}".format(self.foyer,self.act))
+
+class SettingTab(tk.Frame):
+    '''
+        This frame is for manually saving images according to my desire
+    '''
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self,parent,bg=global_settings['app_colour'])
+        self.controller = controller
+
+        frm_input = tk.Frame(self,
+                            width=200,
+                            height=50,
+                            bg=global_settings['app_colour']
+                            )
+        frm_input.place(x=10,y=10)
+
+        self.x1label=MyLabel(parent=frm_input, label_setts=[3, "w", 0, 0])
+        self.x1label.set_label("x1:")
+        self.y1label=MyLabel(parent=frm_input, label_setts=[3, "w", 0, 25])
+        self.y1label.set_label("y1:")
+
+        self.x1label=MyLabel(parent=frm_input, label_setts=[8, "w", 63, 0])
+        self.x1label.set_label("x width:")
+        self.y1label=MyLabel(parent=frm_input, label_setts=[8, "w", 63, 25])
+        self.y1label.set_label("y width:")
+
+        self.x1entry=MyEntry(parent=frm_input, entry_setts=[4,25,1])
+        self.x1entry.set_entry("1234")
+        self.y1entry=MyEntry(parent=frm_input, entry_setts=[4,25,26])
+        self.y1entry.set_entry("2345")
+
+        self.xwentry=MyEntry(parent=frm_input, entry_setts=[4,115,1])
+        self.xwentry.set_entry("1100")
+        self.ywentry=MyEntry(parent=frm_input, entry_setts=[4,115,26])
+        self.ywentry.set_entry("1200")
+
+        frm_dim_list = tk.Frame(self,width=20, height=50)
+        frm_dim_list.place(x=90,y=80)
+        self.frames_dim_list = MyList(parent=frm_dim_list)
+        self.frames_dim_list.width = 20
+        
+        self.up_button = tk.Button(self,
+                            text="Save",
+                            compound="center",
+                            #command=lambda: self.statuslabel.set_label(self.screenlist.move_up()),
+                            background=global_settings['app_colour'],
+                            activebackground="DarkSeaGreen2",
+                            width=9
+                            ).place(x=10,y=207)
+        frmrdbt = tk.Frame(self,width=15, height=10)
+        frmrdbt.place(x=10,y=80)
+        self.screen_option=tk.StringVar()
+        self.screen_option.set(global_settings['screen_option'][0])
+        
+        opt1_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt1")
+        opt2_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt2")
+        opt3_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt3")
+        #opt1_radbutt.config(command=self.update_frame_res)
+        #opt2_radbutt.config(command=self.update_frame_res)
+        #opt3_radbutt.config(command=self.update_frame_res)
 
 class MyEntry(tk.Entry):
     def __init__(self,parent,entry_setts):
