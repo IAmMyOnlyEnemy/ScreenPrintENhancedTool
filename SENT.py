@@ -267,9 +267,9 @@ class ChainPrints(tk.Frame):
 
         self.my_options = global_settings['my_screens']
 
-        frmfoy = tk.Frame(self)
-        frmfoy.place(x=5,y=5)
-        self.foy_text = MyText(parent=frmfoy)
+        frmmember = tk.Frame(self)
+        frmmember.place(x=5,y=5)
+        self.member_text = MyText(parent=frmmember)
 
         frmaction = tk.Frame(self)
         frmaction.place(x=130,y=5)
@@ -300,10 +300,10 @@ class ChainPrints(tk.Frame):
             It starts the process
         '''
         self.goto_sleep()
-        self.foyer_list = self.foy_text.get_list()
+        self.member_list = self.member_text.get_list()
         self.action_list = self.action_text.get_list()
 
-        for self.foyer in self.foyer_list:
+        for self.member in self.member_list:
             self.print_name = ""
             for self.act in self.action_list:
                 self.goto_sleep()
@@ -323,10 +323,22 @@ class ChainPrints(tk.Frame):
     def action_time(self):
         '''
             Evaluate the type of action to be performed:
+                - case 1:
+                    it is found in the screens list from the settings.txt file
+                - case 2:
+                    action for arrow keys, followd by how many times to press it
+                - case 3:
+                    take print screen
         '''
         if self.act in global_settings['my_screens']:
-            if self.act == "CONT":
-                key_press_sim("{0} {1}".format(self.act,self.foyer))
+            '''
+                If we find "#" in action string, we replace it with the value from member list
+                If the first letter is Z, it is a zoom, called through F9 key
+                Otherwise, we paste the test form action column
+            '''
+            if (self.act.find('#') != -1):
+                key_press_sim(self.act.replace("#", self.member))
+                self.act=self.act.replace("#", "").strip()
             elif self.act[0] == 'Z':
                 key_press_sim("PF9")
             else:
@@ -342,25 +354,25 @@ class ChainPrints(tk.Frame):
                 for i in range(0, int(self.act[5:].strip())):
                     key_press_sim("DOWN")
             except:
-                pass
+                key_press_sim("DOWN")
         elif self.act[:2].upper() == 'UP':
             try:
                 for i in range(0, int(self.act[3:].strip())):
                     key_press_sim("UP")
             except:
-                pass
+                key_press_sim("UP")
         elif self.act[:5].upper() == 'RIGHT':
             try:
                 for i in range(0, int(self.act[6:].strip())):
                     key_press_sim("RIGHT")
             except:
-                pass
+                key_press_sim("RIGHT")
         elif self.act[:4].upper() == 'LEFT':
             try:
                 for i in range(0, int(self.act[5:].strip())):
                     key_press_sim("LEFT")
             except:
-                pass
+                key_press_sim("LEFT")
         elif self.act.upper() == "PIC":
             try:
                 take_printscreen(
@@ -376,7 +388,7 @@ class ChainPrints(tk.Frame):
         else:
             self.goto_sleep()
             key_press_sim("{0}".format(self.act))
-        self.statuslabel.set_label("Case {0}, operation {1}".format(self.foyer,self.act))
+        self.statuslabel.set_label("Case {0}, operation {1}".format(self.member,self.act))
 
 class SettingTab(tk.Frame):
     '''
@@ -434,9 +446,6 @@ class SettingTab(tk.Frame):
         opt1_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt1")
         opt2_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt2")
         opt3_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt3")
-        #opt1_radbutt.config(command=self.update_frame_res)
-        #opt2_radbutt.config(command=self.update_frame_res)
-        #opt3_radbutt.config(command=self.update_frame_res)
 
 class MyEntry(tk.Entry):
     def __init__(self,parent,entry_setts):
