@@ -1,9 +1,0 @@
-opt1_dimmension: 350, 200, 900, 550
-opt2_dimmension: 460, 150, 1000, 600
-screen_option: opt1
-checkbox_options: 0, 0, 0, 0
-screen_list: Print1, Print2, Print3, Print4, Print5
-my_screens: CONT, SAVE, ZAVE, TREC, ZREC, TREG, TRGU, TBLT, TREV, TBER, ZBER
-active_window: 198392, Google
-app_colour: LightCyan2
-save_path: C:\users\enach\desktop\python\screensprintenhancedtool

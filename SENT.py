@@ -79,9 +79,9 @@ class PrintScreen(tk.Frame):
         self.screen_option=tk.StringVar()
         self.screen_option.set(global_settings['screen_option'][0])
         
-        opt1_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt1")
-        opt2_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt2")
-        opt3_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt3")
+        opt1_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="Opt1")
+        opt2_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="Opt2")
+        opt3_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="Opt3")
         opt1_radbutt.config(command=self.update_frame_res)
         opt2_radbutt.config(command=self.update_frame_res)
         opt3_radbutt.config(command=self.update_frame_res)
@@ -272,7 +272,7 @@ class ChainPrints(tk.Frame):
         self.member_text = MyText(parent=frmmember)
 
         frmaction = tk.Frame(self)
-        frmaction.place(x=130,y=5)
+        frmaction.place(x=140,y=5)
         self.action_text = MyText(parent=frmaction)
 
         self.progdropbox = MyDropBox(parent=self)
@@ -281,13 +281,13 @@ class ChainPrints(tk.Frame):
 
         num_vals = get_spin_vals()
         lett_vals = get_spin_vals(is_num=False)
-        self.delayspin = MySpinbox(parent=self,spinvals=num_vals,pos_x=250)
+        self.delayspin = MySpinbox(parent=self,spinvals=num_vals,pos_x=275)
         self.delayspin.place(y=45)
-        self.delaylabel = MyLabel(parent=self, label_setts=[17, "w", 282, 45])
-        self.delaylabel.set_label("seconds to delay")
-        self.spin1 = MySpinbox(parent=self,spinvals=num_vals,pos_x=250)
-        self.spin2 = MySpinbox(parent=self,spinvals=lett_vals,pos_x=290)
-        self.spin3 = MySpinbox(parent=self,spinvals=num_vals,pos_x=330)
+        self.delaylabel = MyLabel(parent=self, label_setts=[17, "w", 307, 45])
+        self.delaylabel.set_label("seconds delay")
+        self.spin1 = MySpinbox(parent=self,spinvals=num_vals,pos_x=275)
+        self.spin2 = MySpinbox(parent=self,spinvals=lett_vals,pos_x=315)
+        self.spin3 = MySpinbox(parent=self,spinvals=num_vals,pos_x=355)
 
         self.statuslabel = MyLabel(parent=self, label_setts=[40, "w", 5, 255])
         self.statuslabel.set_label("Ready!")
@@ -376,7 +376,7 @@ class ChainPrints(tk.Frame):
         elif self.act.upper() == "PIC":
             try:
                 take_printscreen(
-                                frame_op = "opt1",
+                                frame_op = "Opt1",
                                 screen_w = self.winfo_screenwidth(), 
                                 screen_h = self.winfo_screenheight(),
                                 image_name = self.print_name,
@@ -443,9 +443,9 @@ class SettingTab(tk.Frame):
         self.screen_option=tk.StringVar()
         self.screen_option.set(global_settings['screen_option'][0])
         
-        opt1_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt1")
-        opt2_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt2")
-        opt3_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="opt3")
+        opt1_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="Opt1")
+        opt2_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="Opt2")
+        opt3_radbutt = MyRadiobutt(parent=frmrdbt,op_val=self.screen_option,val="Opt3")
 
 class MyEntry(tk.Entry):
     def __init__(self,parent,entry_setts):
@@ -671,7 +671,7 @@ class MyText(tk.Text):
     def __init__(self,parent):
         tk.Text.__init__(self,
                         parent,
-                        width=12,
+                        width=14,
                         height=15
                         )
         scrollb = tk.Scrollbar(parent,
@@ -730,9 +730,9 @@ class MyDropBox(tk.OptionMenu):
                                 self.myvar,
                                 *progs,
                                 )
-        self.config(width=17)
+        self.config(width=14)
         self.myvar.trace('w', self.get_dropdown)
-        self.place(x=250,y=2)
+        self.place(x=270,y=2)
 
     def windowEnumerationHandler(self,hwnd,top_windows):
         top_windows.append((hwnd, GetWindowText(hwnd)))

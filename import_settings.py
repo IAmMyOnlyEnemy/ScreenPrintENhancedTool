@@ -50,10 +50,10 @@ def fill_dict(file_name,settings_dict):
 
 def fill_file(file_name):
 	file1 = open(file_name,'w')
-	file1.writelines("opt1_dimmension: 350, 200, 900, 550\n")
-	file1.writelines("opt2_dimmension: 460, 150, 1000, 600\n")
-	file1.writelines("opt3_dimmension: 100, 50, 1200, 800\n")
-	file1.writelines("screen_option: opt1\n")
+	file1.writelines("Opt1_dimmension: 350, 200, 900, 550\n")
+	file1.writelines("Opt2_dimmension: 460, 150, 1000, 600\n")
+	file1.writelines("Opt3_dimmension: 100, 50, 1200, 800\n")
+	file1.writelines("screen_option: Opt1\n")
 	file1.writelines("checkbox_options: 0, 0, 0, 0\n")
 	file1.writelines("screen_list: Print1, Print2, Print3, Print4, Print5\n")
 	file1.writelines("my_screens: CONT, SAVE, ZAVE, TREC, ZREC, TREG, TRGU, TBLT, TREV, TBER, ZBER\n")
